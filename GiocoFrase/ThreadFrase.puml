@@ -1,0 +1,70 @@
+@startuml ThreadFrase
+
+actor Utente
+participant main
+entity schermo
+entity datiCondivisi
+
+Utente -> main ++ : start
+
+loop running
+
+    Utente -> main : frase da analizzare
+    Utente -> main : lettera scelta
+
+    main -> schermo ** : new
+    main -> datiCondivisi ** : new
+
+    main -> Thread_a ** : new
+    main -> Thread_a ++ : start
+
+    main -> Thread_e ** : new
+    main -> Thread_e ++ : start
+
+    Thread_e -> datiCondivisi : termina('a')
+    Thread_a -> main -- : return
+    
+    main -> Thread_i ** : new
+    main -> Thread_i ++ : start
+
+    main -> Thread_o ** : new
+    main -> Thread_o ++ : start
+
+    Thread_e -> datiCondivisi : termina('e')
+    Thread_e -> main -- : return
+
+    main -> Thread_u ** : new
+    main -> Thread_u ++ : start
+
+    Thread_i -> datiCondivisi : termina('i')
+    Thread_i -> main -- : return
+
+    datiCondivisi -> main : isAllOver()
+    main -> schermo : pulisciSchermo
+    schermo -> Utente : messages
+
+    Thread_o -> datiCondivisi : termina('o')
+    Thread_o -> main -- : return
+
+    datiCondivisi -> main : isAllOver()
+    main -> schermo : pulisciSchermo
+    schermo -> Utente : messages
+
+    Thread_u -> datiCondivisi : termina('u')
+    Thread_u -> main -- : return
+
+    datiCondivisi -> main : isAllOver()
+
+    main -> datiCondivisi : datiCondivisi.getPiuUsata()
+    main -> Utente : vocale più usata
+
+    Utente -> main : running
+
+    destroy Thread_a
+    destroy Thread_e
+    destroy Thread_i
+    destroy Thread_o
+    destroy Thread_u
+end
+
+@enduml
