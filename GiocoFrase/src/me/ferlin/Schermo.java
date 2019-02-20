@@ -8,7 +8,6 @@ import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Queue;
-import java.util.concurrent.Semaphore;
 
 /**
  * Classe che gestisce un vettore di stringhe in cui
@@ -25,15 +24,12 @@ public class Schermo {
     
     private final Collection<String> umnodifiableMessages;
     
-    private final Semaphore semaphore;
-    
     /**
      * @brief Costruisce uno schermo
      */
     public Schermo() {
         messageQueue = new ArrayDeque();
         umnodifiableMessages = Collections.unmodifiableCollection(messageQueue);
-        semaphore = new Semaphore(1);
     }
     
     /**
@@ -44,16 +40,12 @@ public class Schermo {
      * @param msg messaggio da visualizzare su schermo
      * @throws RuntimeException se viene raggiunta la capienza massima {@link #MAXEL}
      */
-    public void push(String msg) {
+    public synchronized void push(String msg) {
         messageQueue.offer(msg);        
     }
     
     public Collection<String> getMessages() {
         return umnodifiableMessages;
-    }
-    
-    public Semaphore getSemaphore() {
-        return semaphore;
     }
     
     /**

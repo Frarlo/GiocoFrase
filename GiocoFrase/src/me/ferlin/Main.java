@@ -117,10 +117,10 @@ public final class Main {
                     
                     schermo.pulisciSchermo();
                     
-                    schermo.getSemaphore().acquireUninterruptibly();
-                    for(String s : schermo.getMessages())
-                        System.out.println(s);
-                    schermo.getSemaphore().release();
+                    synchronized (schermo) {
+                        for(String s : schermo.getMessages())
+                            System.out.println(s);
+                    }
                 }
                 
                 final char mostUsed = datiCondivisi.getPiuUsata();

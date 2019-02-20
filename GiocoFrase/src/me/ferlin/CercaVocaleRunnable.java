@@ -124,10 +124,7 @@ public class CercaVocaleRunnable implements Runnable {
             
                 if(currentChar == vocaleDaTrovare) {
                     ptrDati.incrementa(vocaleDaTrovare);
-                    
-                    ptrDati.getSchermo().getSemaphore().acquireUninterruptibly();
                     ptrDati.getSchermo().push("Ho trovato la vocale " + currentChar);
-                    ptrDati.getSchermo().getSemaphore().release();
                 }
             }
         } catch(InterruptedException ex) {
